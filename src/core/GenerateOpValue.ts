@@ -24,14 +24,21 @@ const OpDiff = (op: OP['GT'] | OP['EGT'] | OP['LT'] | OP['ELT'], value: number |
 
 /** IN 查询 */
 const OpIn = (op: OP['IN'] | OP['NOT_IN'], value: Array<string|number> | string): [OP['IN'] | OP['NOT_IN'], string] => {
-    if (Array.isArray(value)) return OpIn(op, `(${value.join(',')})`)
+    if (Array.isArray(value)) return [op, `(${value.join(',')})`]
     if (typeof value === 'string') return [op, value]
     return MissOP(op, value)
 }
 
 /** 区间查询 */
 const OpBeteen = (op: OP['BETWEEN'], value: Array<string|number> | string): [OP['BETWEEN'], string] => {
-    if (Array.isArray(value)) return OpBeteen(op, value.slice(0, 2).join(' AND '))
+    if (Array.isArray(value)) {
+        const val = value.slice(0, 2).map(item => parseFloat(item as string))
+        return [op, [
+            Math.min(val[0], val[1]), 
+            Math.max(val[0], val[1])
+        ].map(item => item.toString()).join(' AND ')
+        ]
+    }
     if (typeof value === 'string') return [op, value]
     return MissOP(op, value)
 }
@@ -59,8 +66,11 @@ const OpMethod = {
  * @returns [操作符, 值]
  */
 export const generateOpValue = (op: OPKeys, value: isValue): [OPKeys, string | number] => {
-    if (value === '') throw new ExceptionMySQL(`value 不能为空字符串`)
+    if (value === '' || value instanceof Array && value.length === 0) throw new ExceptionMySQL(`value 不能为空`)
     const cb = Reflect.get(OpMethod, op) ?? OpOther
-    if (/string|number|/.test(typeof value) || Array.isArray(value)) return Reflect.apply(cb, null, [op, value])
-    throw new ExceptionMySQL(`value 不能为 ${typeof value}`)
+    if (cb === OpOther && /string|number/i.test(typeof value) === false) {
+        if (Array.isArray(value)) return generateOpValue(op, value.join(','))
+        throw new ExceptionMySQL(`value 不能为 ${typeof value}`)
+    }
+    return Reflect.apply(cb, null, [op, value])
 }
