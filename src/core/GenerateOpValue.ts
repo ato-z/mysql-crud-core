@@ -72,5 +72,8 @@ export const generateOpValue = (op: OPKeys, value: isValue): [OPKeys, string | n
         if (Array.isArray(value)) return generateOpValue(op, value.join(','))
         throw new ExceptionMySQL(`value 不能为 ${typeof value}`)
     }
+    if (op === '<' || op === '>' || op === '<=' || op === '>=' || op === '<>') {
+        if (value !== null && isNaN(+value as unknown as number)) throw new ExceptionMySQL(`value 不能为 NaN`)
+    }
     return Reflect.apply(cb, null, [op, value])
 }
