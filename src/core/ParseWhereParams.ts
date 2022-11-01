@@ -1,13 +1,15 @@
 import { OP } from "../enum"
 import { ExceptionMySQL } from "../Error"
 import { generateOpValue } from "./GenerateOpValue"
+
+export type WhereParmaValue = string | number | null |
+[OP['IN'] | OP['NOT_IN'], Array<(string|number)>] |
+[OP['BETWEEN'] | OP['NOT_BETWEEN'], [number, number]] | 
+[OP['LIKE'], string] |
+[OP['EGT'] | OP['ELT'] | OP['GT'] | OP['LT'] | OP['NEQ'], number] |
+[OP['EQ'], string | number | null] | undefined
 export type WhereParma = {
-    [prop: string]: string | number | null |
-    [OP['IN'] | OP['NOT_IN'], Array<(string|number)>] |
-    [OP['BETWEEN'] | OP['NOT_BETWEEN'], [number, number]] | 
-    [OP['LIKE'], string] |
-    [OP['EGT'] | OP['ELT'] | OP['GT'] | OP['LT'] | OP['NEQ'], number] |
-    [OP['EQ'], string | number | null]
+    [prop: string]: WhereParmaValue
 }
 
 /**
@@ -36,6 +38,9 @@ export const parseWhereParams = (where: WhereParma, joinMode: 'AND' | 'OR' = 'AN
         if ((operative === OP['IN'] || operative === OP['NOT_IN'] || operative === OP['BETWEEN'] || operative === OP['NOT_BETWEEN']) && Array.isArray(value) === false) throw new ExceptionMySQL(`当 ${key} 为${OP['IN']}|${OP['NOT_IN']}|${OP['BETWEEN']}|${OP['NOT_BETWEEN']}时, 值必须为一个数组`)
 
         try {
+            //  /^\d+$/.test(value.toString()) ? value : `'${value}'`
+            if (typeof value === 'string') value = value.replace(/-/g, '\\-')
+            if (typeof value === 'string' && !/^\d+$/.test(value.toString())) value = `'${value.replace(/'/g, "\\'")}'`;
             [operative, value] = generateOpValue(operative, value)
         } catch (err: any) {
             throw new ExceptionMySQL(`${key}: ${err?.message}`)

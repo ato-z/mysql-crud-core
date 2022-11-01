@@ -25,7 +25,7 @@ test(`\`title\` LIKE %name`, () => {
     const where = parseWhereParams({
         title: ['LIKE', '%name']
     })
-    expect(where).toBe(`\`title\` LIKE %name`)
+    expect(where).toBe(`\`title\` LIKE '%name'`)
 })
 
 test(`\`id\` IN (1,2,3,4,5,7) AND \`id2\` NOT IN (1,2,3,4,5,7) AND \`delete_time\` IS NULL`, () => {
