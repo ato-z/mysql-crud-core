@@ -1,6 +1,6 @@
 import { WhereParmaValue } from "../core/ParseWhereParams"
 
-export type Option<T> = {
+export type SelectOption<T> = {
     where?: {
         and?: {
             [P in keyof T]?: WhereParmaValue

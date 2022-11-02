@@ -1,7 +1,7 @@
 import { withWhere } from "../core/WithWhere"
-import { Option } from "./Option"
+import { SelectOption } from "./Option"
 
-export const Select = <T>(tableName: string, option: Option<T> = {}) => {
+export const Select = <T>(tableName: string, option: SelectOption<T> = {}) => {
     const { field, where, order, limit } = option
     const sqlSelectFrom = [`SELECT ${field?.map(f => `\`${f}\``) ?? '*'} FROM \`${tableName}\``]
     /** 组合where条件 */
