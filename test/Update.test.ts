@@ -1,11 +1,11 @@
 import { Update } from '../src/action/Upadte'
 import { ExceptionMySQL } from '../src/Error'
 
-const test = (str: string, cb: () => void) => {
+/*const test = (str: string, cb: () => void) => {
     console.log('test:', str)
     cb()
 }
-const expect = (val: unknown) => ({toBe (targer: unknown) { console.log(targer === val) }})
+const expect = (val: unknown) => ({toBe (targer: unknown) { console.log(targer === val) }})*/
 
 type User = {
     id: number
