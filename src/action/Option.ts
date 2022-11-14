@@ -1,6 +1,6 @@
 import { WhereParmaValue } from "../core/ParseWhereParams"
 
-export type SelectOption<T> = {
+export interface SelectOption<T> {
     where?: {
         and?: {
             [P in keyof T]?: WhereParmaValue
@@ -13,4 +13,8 @@ export type SelectOption<T> = {
     join?: 'AND'|'OR',
     order?: [keyof T & string, 'DESC'|'ASC'],
     limit?: number | [number, number]
+}
+
+export interface UpdateOption<T> extends SelectOption<T> {
+    limit?: number
 }

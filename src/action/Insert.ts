@@ -1,3 +1,4 @@
+import { filterSqlVal } from "../core/filterSqlVal"
 import { ExceptionMySQL } from "../Error"
 
 const isObj = (target: unknown): boolean => {
@@ -65,11 +66,7 @@ const withInsertData = (fields: Array<string>, list: Array<object>): string => {
     list.forEach(item => {
         const itemVal: Array<string|number> = []
         fields.forEach(key => {
-            let val = Reflect.get(item, key)
-            if (typeof val === 'string') {
-                val = val.replace(/-/g, '\\-')
-                val = /^\d+$/.test(val) ? val : `'${val}'`
-            }
+            const val = filterSqlVal(Reflect.get(item, key), key)
             itemVal.push(val)
         })
         vals.push(`(${itemVal.join(',')})`)
