@@ -18,3 +18,7 @@ export interface SelectOption<T> {
 export interface UpdateOption<T> extends SelectOption<T> {
     limit?: number
 }
+
+export interface DeleteOption<T> extends SelectOption<T> {
+    limit?: number
+}
