@@ -6,3 +6,4 @@ tsconfig.json
 jest.config.ts
 test/*
 babel.config.js
+scripts/*
