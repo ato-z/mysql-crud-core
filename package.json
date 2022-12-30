@@ -1,10 +1,10 @@
 {
   "name": "mysql-crud-core",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "main": "index.js",
   "author": "ato-z <523333404@qq.com>",
   "description": "🍕🍕🍕 常規的MySQL查詢組合",
-  "keywords": ["MySql", "CURD", "CRUD"],
+  "keywords": ["MySql", "CURD", "CRUD", "SQL"],
   "license": "MIT",
   "scripts": {
     "build": "tsc",

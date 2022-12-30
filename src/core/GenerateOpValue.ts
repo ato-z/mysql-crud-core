@@ -23,8 +23,12 @@ const OpDiff = (op: OP['GT'] | OP['EGT'] | OP['LT'] | OP['ELT'], value: number |
 }
 
 /** IN 查询 */
+const valueStr = (value: unknown) => {
+    if (typeof value === 'string') return `'${value.replace(/'/g, "\\'")}'`
+    return value
+}
 const OpIn = (op: OP['IN'] | OP['NOT_IN'], value: Array<string|number> | string): [OP['IN'] | OP['NOT_IN'], string] => {
-    if (Array.isArray(value)) return [op, `(${value.join(',')})`]
+    if (Array.isArray(value)) return [op, `(${value.map(valueStr).join(',')})`]
     if (typeof value === 'string') return [op, value]
     return MissOP(op, value)
 }
