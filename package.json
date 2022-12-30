@@ -1,6 +1,6 @@
 {
   "name": "mysql-crud-core",
-  "version": "1.0.2",
+  "version": "1.0.6",
   "main": "index.js",
   "author": "ato-z <523333404@qq.com>",
   "description": "🍕🍕🍕 常規的MySQL查詢組合",
