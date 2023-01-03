@@ -77,7 +77,7 @@ export const generateOpValue = (op: OPKeys, value: isValue): [OPKeys, string | n
         throw new ExceptionMySQL(`value 不能为 ${typeof value}`)
     }
     if (op === '<' || op === '>' || op === '<=' || op === '>=' || op === '<>') {
-        if (value !== null && isNaN(+value as unknown as number)) throw new ExceptionMySQL(`value 不能为 NaN`)
+        if (value !== null && isNaN(+value as unknown as number) && isNaN(new Date(value as unknown as string).getTime())) throw new ExceptionMySQL(`value 不能为 NaN`)
     }
     return Reflect.apply(cb, null, [op, value])
 }
