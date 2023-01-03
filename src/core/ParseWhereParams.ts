@@ -39,7 +39,7 @@ export const parseWhereParams = (where: WhereParma, joinMode: 'AND' | 'OR' = 'AN
 
         try {
             //  /^\d+$/.test(value.toString()) ? value : `'${value}'`
-            if (typeof value === 'string') value = value.replace(/-/g, '\\-')
+            if (typeof value === 'string') value = value.replace(/--/g, '\\--')
             if (typeof value === 'string' && !/^\d+$/.test(value.toString())) value = `'${value.replace(/'/g, "\\'")}'`;
             [operative, value] = generateOpValue(operative, value)
         } catch (err: any) {
