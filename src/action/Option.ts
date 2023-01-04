@@ -14,7 +14,7 @@ export interface Option<T> {
 }
 
 export interface SelectOption<T> extends Option<T>{
-    field?: (keyof T & string)[],
+    field?: (keyof T & string)[] | string,
     limit?: number | [number, number]
 }
 
