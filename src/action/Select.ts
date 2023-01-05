@@ -7,10 +7,10 @@ export const Select = <T>(tableName: string, option: SelectOption<T> = {}) => {
     const sqlSelectFrom = [`SELECT ${fieldProp} FROM \`${tableName}\``]
     /** 组合where条件 */
     if (where !== undefined) { sqlSelectFrom.push(withWhere(where.and, where.or, option.join)) }
+    /** 排序 */
+    if (order !== undefined) { sqlSelectFrom.push(`ORDER BY ${order[0]} ${order[1]}`) }
     /** 行数 */
     if (Array.isArray(limit)) { sqlSelectFrom.push(`LIMIT ${limit}`) }
     if (limit && /^\d+$/.test(limit.toString())) { sqlSelectFrom.push(`LIMIT 0,${limit}`) }
-    /** 排序 */
-    if (order !== undefined) { sqlSelectFrom.push(`ORDER BY ${order[0]} ${order[1]}`) }
     return sqlSelectFrom.join(' ')
 }
